@@ -1,9 +1,13 @@
 import React from 'react';
+import './translation';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {addProductItem} from "store/actions/products";
+import { useTranslation } from 'react-i18next';
 
 const AddProduct = ({units, addProductItem}) => {
+    const { t } = useTranslation('addProduct');
+
     const addProduct = (e) => {
         e.preventDefault();
         const elements = e.target && e.target.elements;
@@ -24,16 +28,16 @@ const AddProduct = ({units, addProductItem}) => {
         <form onSubmit={addProduct}>
             <div>
                 <label>
-                    <span>Название:</span>
+                    <span>{t('title')}</span>
                     <input name='name' required/>
                 </label>
             </div>
             <div>
                 <label>
-                    <span>Единицы измерения:</span>
+                    <span>{t('units')}</span>
                     <select name='unit'>
                         <option value={''}>
-                            Неважно
+                            {t('neverMind')}
                         </option>
                         {Object.entries(units).map(([key, [{name}]]) => (
                             <option value={key} key={key}>
@@ -44,7 +48,7 @@ const AddProduct = ({units, addProductItem}) => {
                 </label>
             </div>
             <button type='submit'>
-                Создать
+                {t('create')}
             </button>
         </form>
     );

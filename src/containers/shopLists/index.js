@@ -1,12 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
-import {getUnixTime} from 'date-fns';
+import './translation';
 import ShopListItem from "components/shopLists/item";
 import {addListItem, changeListName, deleteListItem} from "store/actions/lists";
-
+import { useTranslation } from 'react-i18next';
 
 const ShopLists = ({lists, addListItem, changeListName, deleteListItem}) => {
+    const { t } = useTranslation('shopLists');
     const createList = () => {
         addListItem && addListItem();
     };
@@ -23,15 +24,15 @@ const ShopLists = ({lists, addListItem, changeListName, deleteListItem}) => {
 
     return (<div>
         <button onClick={createList}>
-            Добавить
+            {t('add')}
         </button>
 
-        <h1>Списки покупок:</h1>
+        <h1>{t('list')}:</h1>
         <ul>
             {Object.entries(lists).map(([id, object]) => (
                 <li key={id}>
                     <ShopListItem id={id} {...object} saveName={(name) => saveListName(id, name)}/>
-                    <div onClick={() => { deleteList(id); }}>Удалить</div>
+                    <div onClick={() => { deleteList(id); }}>{t('delete')}</div>
                 </li>
             ))}
         </ul>

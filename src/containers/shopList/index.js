@@ -2,9 +2,12 @@ import React, {useEffect} from 'react';
 import ProductItem from "components/productItem";
 import ProductItemInfo from "components/productItem/info";
 import AddProduct from "containers/addProduct";
+import ChangeLanguage from 'components/changeLanguage';
+import './translation';
 import {connect} from "react-redux";
 import {addItemToList, changeInfoFromItemFromList, deleteItemFromList, addListItem} from "store/actions/lists";
 import {Link} from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const ShopListContainer = ({currentList,
                                products,
@@ -14,12 +17,15 @@ const ShopListContainer = ({currentList,
                                addListItem,
                                changeInfoFromItemFromList}) => {
 
+    const { t } = useTranslation('shopList');
 
     useEffect(() => {
         if(!currentList) {
             addListItem();
         }
     }, [currentList]);
+
+    // methods
 
     const addInfoToProduct = (name, id, value) => {
 
@@ -40,53 +46,60 @@ const ShopListContainer = ({currentList,
         deleteItemFromList && deleteItemFromList(id);
     };
 
+    // variables TODO add to another containers
+
+    const currentListItems = Object
+    .entries(currentList && currentList.items && currentList.items || {})
+    .filter(([id]) => products[id] && products[id].name)
+    .map(([id, {description, count, unit, isBuyed}]) => (
+        <li key={id}>
+            <div onClick={() => deleteItem(id)}>Удалить</div>
+            <div>Товар куплен: {isBuyed ? 'Да' : 'Нет'}</div>
+            {!isBuyed && <div onClick={() => addInfoToProduct('isBuyed', id, !isBuyed)}>Купить</div> }
+            <ProductItem name={products[id].name}/>
+            <ProductItemInfo description={description}
+                             count={count}
+                             units={units}
+                             product={products[id]}
+                             addInfoToProduct={(name, e) => addInfoToProduct(name, id, e && e.target && e.target.value)}
+                             unit={unit}/>
+        </li>
+    ));
+
+    const productListItems = Object
+    .entries(products)
+    .map(([id, {name}]) => (
+        <li onClick={() => {
+            addToList(id);
+        }} key={id}>
+            <ProductItem name={name}/>
+        </li>
+    ));
+
     return (<div>
         <Link to={`/`}>Назад</Link>
+        <ChangeLanguage />
         <h1>
-            Текущий список:
+            {t('currentList')}:
         </h1>
         <ul>
-            {
-                currentList && currentList.items && Object.entries(currentList.items)
-                    .filter(([id]) => products[id] && products[id].name)
-                    .map(([id, {description, count, unit, isBuyed}]) => (
-                        <li key={id}>
-                            {console.log(description, count, unit, isBuyed)}
-                            <div onClick={() => deleteItem(id)}>Удалить</div>
-                            <div>Товар куплен: {isBuyed ? 'Да' : 'Нет'}</div>
-                            {!isBuyed &&  <div onClick={() => addInfoToProduct('isBuyed', id, !isBuyed)}>Купить</div>}
-                            <ProductItem name={products[id].name}/>
-                            <ProductItemInfo description={description}
-                                             count={count}
-                                             units={units}
-                                             product={products[id]}
-                                             addInfoToProduct={(name, e) => addInfoToProduct(name, id, e && e.target && e.target.value)}
-                                             unit={unit}/>
-                        </li>
-                    ))
-            }
+            { currentListItems }
         </ul>
         <h1>
-            Набор продуктов:
+            {t('productSet')}:
         </h1>
         <ul>
-            {Object.entries(products).map(([id, {name}]) => (
-                <li onClick={() => {
-                    addToList(id);
-                }} key={id}>
-                    <ProductItem name={name}/>
-                </li>
-            ))}
+            { productListItems }
         </ul>
 
         <h2>
-            Добавить продукт
+            {t('addProduct')}:
         </h2>
         <AddProduct/>
     </div>);
 };
 
-const mapStateToProps = (state, {match}) => {
+const mapStateToProps = (state, {match, t}) => {
     const id = match && match.params && match.params.id || '';
     const currentList = id && state && state.lists && state.lists[id];
     return {
@@ -96,9 +109,8 @@ const mapStateToProps = (state, {match}) => {
     }
 };
 
-const mapDispatchToProps = (dispatch, {match}) => {
+const mapDispatchToProps = (dispatch, {match, t}) => {
     const id = match && match.params && match.params.id || '';
-
     return {
         deleteItemFromList: (itemId) => dispatch(deleteItemFromList({id, itemId})),
         addItemToList: (itemId) => dispatch(addItemToList({id, itemId})),
