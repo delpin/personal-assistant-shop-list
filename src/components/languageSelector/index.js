@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-const ChangeLanguage = () => {
+const LanguageSelector = () => {
     const { i18n } = useTranslation();
 
     const changeLanguageCb = (lang = 'en') => {
@@ -16,4 +16,4 @@ const ChangeLanguage = () => {
     )
 };
 
-export default ChangeLanguage;
+export default LanguageSelector;

@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import {Link} from "react-router-dom";
 
 import AddProduct from "containers/addProduct";
-import ChangeLanguage from 'components/changeLanguage';
 import ProductList from "containers/productList";
 import ShopListContainer from "containers/shopList";
+import LanguageSelector from "components/languageSelector";
 
 const ShopListPage = ({match}) => {
 
@@ -17,7 +17,7 @@ const ShopListPage = ({match}) => {
 
     return (<div>
         <Link to={`/`}>Назад</Link>
-        <ChangeLanguage />
+        <LanguageSelector />
         <h1>
             {t('currentList')}:
         </h1>
