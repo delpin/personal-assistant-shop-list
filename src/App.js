@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import 'normalize.css/normalize.css';
 import i18n from "./i18n";
 
-import AppRouter from "components/router";
+import AppRouter from "router";
 import appStore from "store/configureStore";
 
 

@@ -17,75 +17,88 @@ import {getUnixTime} from "date-fns";
  */
 export const initialState = {};
 
+const productItemBlank = () => ({
+    count: 0,
+    unit: null,
+    description: '',
+    isBuyed: false,
+});
+
+const listItemBlank = () => ({
+    name: '',
+    items: {},
+    creationTime: getUnixTime(new Date()),
+});
+
 export const reducersMaps = {
-    [LISTS_ACTIONS.ADD_LIST_ITEM]: (state = initialState, { payload = '' }) => {
+    [LISTS_ACTIONS.ADD_LIST_ITEM]: (state = initialState, { payload: id = '' }) => {
         return {
             ...state,
-            [payload || uuid()]: {
-                name: '',
-                items: {},
-                creationTime: getUnixTime(new Date()),
-            },
+            [id || uuid()]: listItemBlank(),
         };
     },
     [LISTS_ACTIONS.ADD_ITEM_TO_LIST]: (state = initialState, { payload = {} }) => {
+        const {listId = '', productId = ''} = payload;
+
+        if(state && state[listId] && state[listId].items && state[listId].items[productId]) {
+            return state;
+        }
+
         return {
             ...state,
-            [payload.id]: {
-                ...state[payload.id],
+            [listId]: {
+                ...state[listId],
                 items: {
-                    ...state[payload.id].items,
-                    [payload.itemId]: {
-                        count: 0,
-                        unit: null,
-                        description: '',
-                        isBuyed: false,
-                    }
+                    ...state[listId].items,
+                    [productId]: productItemBlank(),
                 }
             },
         };
     },
     [LISTS_ACTIONS.DELETE_ITEM_FROM_LIST]: (state = initialState, { payload = {} }) => {
-        const items = { ...(state[payload.id] && state[payload.id].items || {}) };
-        delete items[payload.itemId];
+        const {listId = '', productId = ''} = payload;
+        const items = { ...(state[listId] && state[listId].items || {}) };
+        delete items[productId];
         return {
             ...state,
-            [payload.id]: {
-                ...state[payload.id],
+            [listId]: {
+                ...state[listId],
                 items
             },
         };
     },
     [LISTS_ACTIONS.CHANGE_INFO_FROM_ITEM_FROM_LIST]: (state = initialState, { payload = {} }) => {
+        const {listId = '', productId = '', data = {}} = payload;
         return {
             ...state,
-            [payload.id]: {
-                ...state[payload.id],
+            [listId]: {
+                ...state[listId],
                 items: {
-                    ...state[payload.id].items,
-                    [payload.itemId]: {
-                        ...state[payload.id].items[payload.itemId],
-                        ...payload.data,
+                    ...state[listId].items,
+                    [productId]: {
+                        ...state[listId].items[productId],
+                        ...data,
                     }
                 }
             },
         };
     },
-    [LISTS_ACTIONS.DELETE_LIST_ITEM]: (state = initialState, { payload = '' }) => {
-        if (payload) {
+    [LISTS_ACTIONS.DELETE_LIST_ITEM]: (state = initialState, { payload: id = '' }) => {
+        if (id) {
             const list = {...state};
-            delete list[payload || ''];
+            delete list[id];
             return list;
         }
         return state;
     },
     [LISTS_ACTIONS.CHANGE_LIST_NAME]: (state = initialState, { payload = {} }) => {
-        if (payload.id && state[payload.id] && payload.name) {
+        const {id = '', name = ''} = payload;
+        if (state && state[id] && name) {
             return {
                 ...state,
-                [payload.id]: {
-                    ...state[payload.id],
-                    name: payload.name,
+                [id]: {
+                    ...state[id],
+                    name,
                 }
             };
         }

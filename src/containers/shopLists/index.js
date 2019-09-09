@@ -6,7 +6,7 @@ import ShopListItem from "components/shopLists/item";
 import {addListItem, changeListName, deleteListItem} from "store/actions/lists";
 import { useTranslation } from 'react-i18next';
 
-const ShopLists = ({lists, addListItem, changeListName, deleteListItem}) => {
+const ShopListsContainer = ({lists, addListItem, changeListName, deleteListItem}) => {
     const { t } = useTranslation('shopLists');
     const createList = () => {
         addListItem && addListItem();
@@ -22,7 +22,7 @@ const ShopLists = ({lists, addListItem, changeListName, deleteListItem}) => {
         deleteListItem && deleteListItem(id)
     };
 
-    return (<div>
+    return (<>
         <button onClick={createList}>
             {t('add')}
         </button>
@@ -36,7 +36,7 @@ const ShopLists = ({lists, addListItem, changeListName, deleteListItem}) => {
                 </li>
             ))}
         </ul>
-    </div>)
+    </>)
 };
 
 const mapStateToProps = state => ({
@@ -51,4 +51,4 @@ const mapDispatchToProps = (dispatch) => ({
     }, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShopLists);
+export default connect(mapStateToProps, mapDispatchToProps)(ShopListsContainer);
