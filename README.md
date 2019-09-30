@@ -2,7 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Description:
 
-This project was created to demonstrate sample code for interviews. The project was created to demonstrate JS code (React), the styles of the project are added for easy viewing only. This project was created to demonstrate sample code for interviews. The project was created to demonstrate the React code, the styles of the project are added for easy viewing. The project will not be supported.
+This project was created to demonstrate sample code for interviews. The styles of the project are added for easy viewing only. This project was created to demonstrate sample code for interviews. The project was created to demonstrate the React code, the styles of the project are added for easy viewing. The project will not be supported.
 
 ## Base project technologies:
 - React
