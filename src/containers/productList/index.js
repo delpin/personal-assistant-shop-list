@@ -5,14 +5,15 @@ import ProductItem from "components/productItem";
 
 const ProductListContainer = ({ products = [], addItemToList = () => {}}) => {
     return (
-        <ul>
+        <ul className='flex flex-wrap'>
             {
                 Array.isArray(products) && products.map(({id: productId = '', name: productName = ''}) => (
                         <li key={productId}
+                            className='pa2'
                             onClick={() => {
                                 addItemToList && addItemToList(productId);
                             }}>
-                            <ProductItem name={productName}/>
+                            <ProductItem className='hover-bg-light-silver' name={productName}/>
                         </li>
                     ))
             }

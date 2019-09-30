@@ -25,17 +25,17 @@ const AddProduct = ({units, addProductItem}) => {
     };
 
     return (
-        <form onSubmit={addProduct}>
-            <div>
-                <label>
-                    <span>{t('title')}</span>
-                    <input name='name' required/>
+        <form onSubmit={addProduct} className='pa2'>
+            <div className='mb2'>
+                <label className='f5'>
+                    <span>{t('title')}: </span>
+                    <input className='pa2 w-100 border-box mt1' name='name' required/>
                 </label>
             </div>
-            <div>
+            <div className='mb2'>
                 <label>
-                    <span>{t('units')}</span>
-                    <select name='unit'>
+                    <span className='f5'>{t('units')}: </span>
+                    <select className='pa2 w-100 border-box mt1' name='unit'>
                         <option value={''}>
                             {t('neverMind')}
                         </option>
@@ -47,7 +47,7 @@ const AddProduct = ({units, addProductItem}) => {
                     </select>
                 </label>
             </div>
-            <button type='submit'>
+            <button className='ba bw1 br1 pointer b--gray pa2 hover-bg-light-silver mt3' type='submit'>
                 {t('create')}
             </button>
         </form>

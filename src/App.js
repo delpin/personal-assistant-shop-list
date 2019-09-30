@@ -1,17 +1,22 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import 'normalize.css/normalize.css';
-import i18n from "./i18n";
+import 'reset-css';
+import "./i18n";
+import 'tachyons';
 
 import AppRouter from "router";
 import appStore from "store/configureStore";
+import AppCssWrapper from "components/appCssWrapper";
 
 
 
 const App = () => {
   return (
     <Provider store={appStore}>
-        <AppRouter/>
+        <AppCssWrapper>
+            <AppRouter/>
+        </AppCssWrapper>
     </Provider>
   );
 };

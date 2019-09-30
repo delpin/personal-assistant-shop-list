@@ -1,17 +1,24 @@
 import React from 'react';
+import './translation';
+
 import { useTranslation } from 'react-i18next';
+
+const languagesList = ['ru', 'en'];
 
 const LanguageSelector = () => {
     const { i18n } = useTranslation();
+    const { t } = useTranslation('languageSelector');
 
     const changeLanguageCb = (lang = 'en') => {
         i18n.changeLanguage(lang);
-    }
+    };
+
     return (
         <div>
-            <h3>Выбирите язык:</h3>
-            <div onClick={() => changeLanguageCb('ru')}>Русский</div>
-            <div onClick={() => changeLanguageCb('en')}>Английский</div>
+            <h5 className='f5 mb2'>{t('title')}:</h5>
+            {languagesList.map(name => (
+                <div className='f6 pointer mb1' onClick={() => changeLanguageCb(name)}>{t(name)}</div>
+            ))}
         </div>
     )
 };

@@ -3,8 +3,12 @@ import {addListItem, changeInfoFromItemFromList, deleteItemFromList} from "store
 import {connect} from "react-redux";
 import ProductItem from "components/productItem";
 import ProductItemInfo from "components/productItem/info";
+import { useTranslation } from 'react-i18next';
+
+import './translation';
 
 const ShopListContainer = (props) => {
+    const { t } = useTranslation('ShopListContainer');
     const {
         isCurrentListCreated = false,
         list = [],
@@ -30,7 +34,7 @@ const ShopListContainer = (props) => {
     };
 
     return (
-        <ul>
+        <ul className='flex flex-wrap'>
             {
                 list.map(item => {
                     const {
@@ -42,12 +46,19 @@ const ShopListContainer = (props) => {
                         productInfo,
                     } = item;
                     return (
-                        <li key={productId}>
-                            <div onClick={() => deleteItemFromList && deleteItemFromList(productId)}>Удалить</div>
-                            <div>Товар куплен: {isBuyed ? 'Да' : 'Нет'}</div>
-                            {!isBuyed &&
-                            <div onClick={() => addInfoToProduct(productId, 'isBuyed', !isBuyed)}>Купить</div>}
-                            <ProductItem name={productInfo.name}/>
+                        <li className='pa2' key={productId}>
+                            <div className='pa1'>
+                                <div className='flex'>
+                                    <div className='red f6 pointer pa1' onClick={() => deleteItemFromList && deleteItemFromList(productId)}>{t('delete')}</div>
+                                    {!isBuyed &&
+                                    <div className='green f6 pointer pa1' onClick={() => addInfoToProduct(productId, 'isBuyed', !isBuyed)}>{t('buy')}</div>
+                                    }
+                                </div>
+                                <div className='f6 pa1'>{t('isBuyed')}: {isBuyed ? t('yes') : t('no')}</div>
+                            </div>
+                            <div className='flex justify-center'>
+                                <ProductItem name={productInfo.name}/>
+                            </div>
                             <ProductItemInfo description={itemDescription}
                                              count={itemCount}
                                              units={units}
