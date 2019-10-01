@@ -16,8 +16,8 @@ const LanguageSelector = () => {
     return (
         <div>
             <h5 className='f5 mb2'>{t('title')}:</h5>
-            {languagesList.map(name => (
-                <div className='f6 pointer mb1' onClick={() => changeLanguageCb(name)}>{t(name)}</div>
+            {languagesList.map((name, index) => (
+                <div key={index} className='f6 pointer mb1' onClick={() => changeLanguageCb(name)}>{t(name)}</div>
             ))}
         </div>
     )
